@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Semogly.Maestro.Abstractions/Semogly.Maestro.Abstractions.csproj" />
+    <Project Path="src/Semogly.Maestro.Activities.FileSystem/Semogly.Maestro.Activities.FileSystem.csproj" />
+    <Project Path="src/Semogly.Maestro.Activities.Http/Semogly.Maestro.Activities.Http.csproj" />
+    <Project Path="src/Semogly.Maestro.Core/Semogly.Maestro.Core.csproj" />
+    <Project Path="src/Semogly.Maestro.Engine/Semogly.Maestro.Engine.csproj" />
+    <Project Path="src/Semogly.Maestro.Persistence/Semogly.Maestro.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Semogly.Maestro.Activities.FileSystem.Tests/Semogly.Maestro.Activities.FileSystem.Tests.csproj" />
+    <Project Path="tests/Semogly.Maestro.Activities.Http.Tests/Semogly.Maestro.Activities.Http.Tests.csproj" />
+    <Project Path="tests/Semogly.Maestro.Core.Tests/Semogly.Maestro.Core.Tests.csproj" />
+    <Project Path="tests/Semogly.Maestro.Engine.Tests/Semogly.Maestro.Engine.Tests.csproj" />
+    <Project Path="tests/Semogly.Maestro.Persistence.Tests/Semogly.Maestro.Persistence.Tests.csproj" />
+  </Folder>
+</Solution>
