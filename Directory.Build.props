@@ -11,6 +11,9 @@
   <PropertyGroup>
     <Version>0.1.0</Version>
     <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/packages</PackageOutputPath>
+    <RepositoryUrl>https://github.com/semog-dev/Semogly.Maestro</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/semog-dev/Semogly.Maestro</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>

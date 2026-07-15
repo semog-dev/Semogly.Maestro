@@ -15,9 +15,43 @@ Biblioteca .NET 10 para modelar e executar pipelines de processos agendados (wor
 
 Instale só o que for usar — os pacotes de Activities são opcionais e cada categoria nova (email, etc.) vem em um pacote próprio.
 
-## Consumindo os pacotes localmente
+## Consumindo os pacotes
 
-Enquanto a lib não está publicada em um feed público, gere os `.nupkg` e aponte um source local do NuGet para eles:
+### Opção A — GitHub Packages (github.com/semog-dev/Semogly.Maestro)
+
+Os pacotes são publicados no feed NuGet do GitHub Packages, associado a este repositório. Mesmo sendo um repositório público, o GitHub exige autenticação para **restaurar** pacotes NuGet dele (limitação do próprio GitHub Packages) — então quem for consumir precisa de um Personal Access Token com escopo `read:packages`.
+
+1. Gerar/ter um PAT com `read:packages` (classic token, ou via `gh auth refresh -h github.com -s read:packages` se já usa o `gh` CLI).
+2. Cadastrar o source autenticado:
+
+   ```bash
+   dotnet nuget add source --username SEU_USUARIO_GITHUB --password SEU_TOKEN --store-password-in-clear-text \
+     --name github "https://nuget.pkg.github.com/semog-dev/index.json"
+   ```
+
+3. Instalar (o `--source` do `dotnet add package` precisa da URL, não do nome cadastrado no passo anterior — testado, o nome não é resolvido):
+
+   ```bash
+   dotnet add package Semogly.Maestro.Engine --source https://nuget.pkg.github.com/semog-dev/index.json
+   dotnet add package Semogly.Maestro.Persistence --source https://nuget.pkg.github.com/semog-dev/index.json
+   dotnet add package Semogly.Maestro.Activities.FileSystem --source https://nuget.pkg.github.com/semog-dev/index.json
+   dotnet add package Semogly.Maestro.Activities.Http --source https://nuget.pkg.github.com/semog-dev/index.json
+   ```
+
+   O nome do source cadastrado no passo 2 (`github`) é usado normalmente por `dotnet restore`/`dotnet build` depois que o `PackageReference` já está no `.csproj` — a limitação do nome não resolvido é só no momento do `dotnet add package`.
+
+Publicar uma nova versão (mantenedores do pacote):
+
+```bash
+dotnet pack -c Release
+dotnet nuget push "artifacts/packages/*.nupkg" --api-key SEU_TOKEN --source github --skip-duplicate
+```
+
+O GitHub Packages não sobrescreve uma versão já publicada — suba o `<Version>` em `Directory.Build.props` antes de publicar de novo (`--skip-duplicate` só evita erro, não substitui o conteúdo).
+
+### Opção B — pasta local (sem publicar em lugar nenhum)
+
+Útil para testar mudanças antes de publicar. Gere os `.nupkg` e aponte um source local do NuGet para eles:
 
 ```bash
 dotnet pack -c Release
@@ -32,7 +66,7 @@ dotnet add package Semogly.Maestro.Activities.FileSystem --source /caminho/para/
 dotnet add package Semogly.Maestro.Activities.Http --source /caminho/para/semogly/artifacts/packages
 ```
 
-`--source` precisa do caminho literal (o nome de um source cadastrado via `dotnet nuget add source --name` não é resolvido por `dotnet add package` de forma confiável). Se preferir não repetir o caminho, cadastre-o como source padrão do projeto num `nuget.config` local (`dotnet new nugetconfig` e edite `<add key="semogly-local" value="/caminho/.../artifacts/packages" />`).
+`--source` precisa do caminho literal, pelo mesmo motivo do GitHub Packages acima (`dotnet add package` não resolve o nome de um source cadastrado via `dotnet nuget add source --name`). Se preferir não repetir o caminho, cadastre-o como source padrão do projeto num `nuget.config` local (`dotnet new nugetconfig` e edite `<add key="semogly-local" value="/caminho/.../artifacts/packages" />`) — aí `dotnet restore` já considera ele automaticamente.
 
 ## Registrando no DI
 
